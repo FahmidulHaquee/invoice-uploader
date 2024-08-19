@@ -1,7 +1,10 @@
 {
     "cSpell.words": [
+        "Cardless",
         "chromedriver",
         "dotenv",
+        "fitz",
+        "GOCARDLESS",
         "pdfplumber"
     ]
 }
