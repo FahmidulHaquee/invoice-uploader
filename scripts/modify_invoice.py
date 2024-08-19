@@ -39,7 +39,6 @@ coordinates = [
 
 for (x0, y0, x1, y1) in coordinates:
     page.draw_rect(fitz.Rect(x0, y0, x1, y1), color=(0, 0, 0), fill=(0, 0, 0))
-
 print("Removed the unnecessary information from the PDF")
 
 # redact lines that do not correspond to specified transactions
@@ -63,5 +62,4 @@ for page_num in range(1, len(pdf_document)):
 pdf_document.save(output_pdf_path)
 pdf_document.close()
 os.remove(trimmed_pdf_path)
-
 print(f"The modified PDF has been saved as {output_pdf_path}")

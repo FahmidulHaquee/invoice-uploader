@@ -11,37 +11,33 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
-driver_path = os.getenv("DRIVER_PATH")
-profile_path = os.getenv("PROFILE_PATH")
-print(f"Profile path: {profile_path}")
+DRIVER_PATH=os.getenv("DRIVER_PATH")
+PROFILE_PATH=os.getenv("PROFILE_PATH")
+DOWNLOAD_URL=os.getenv("DOWNLOAD_URL")
+USERNAME=os.getenv("DOWNLOAD_LOGIN_USERNAME")
+PASSWORD=os.getenv("DOWNLOAD_LOGIN_PASSWORD")
 
 chrome_options = Options()
-chrome_options.add_argument(f"user-data-dir={profile_path}")
-chrome_options.add_argument(f"profile-directory={os.path.basename(profile_path)}")
+chrome_options.add_argument(f"user-data-dir={PROFILE_PATH}")
+chrome_options.add_argument(f"profile-directory=Default")
 
-service = Service(driver_path)
+service = Service(executable_path=DRIVER_PATH)
+driver = webdriver.Chrome(options=chrome_options)
 
-driver = webdriver.Chrome(service=service, options=chrome_options)
-time.sleep(10)
+try:
+    print("Opening the website...")
+    driver.get(DOWNLOAD_URL)
+    print("Website opened successfully!")
+    button = WebDriverWait(driver, 5).until(
+        EC.element_to_be_clickable((By.ID, "top-header-btn"))
+    )
+    print("Button loaded successfully!")
+    button.click()
+    time.sleep(5)
+    print("Button clicked successfully!")
 
-# try:
-#     driver.get(os.getenv("DOWNLOAD_URL"))
+except Exception as e:
+    print(f"An error occurred: {e}")
 
-    # username_field = WebDriverWait(driver, 10).until(
-    #     EC.presence_of_element_located((By.NAME, "username"))
-    # )
-    # password_field = driver.find_element(By.NAME, "password")
-
-    # username_field.send_keys("your_username")
-    # password_field.send_keys("your_password")
-
-    # password_field.send_keys(Keys.RETURN)
-
-    # wait for a certain element to appear
-    # success_element = WebDriverWait(driver, 10).until(
-    #     EC.presence_of_element_located((By.ID, "success-element-id"))
-    # )
-    # print("Login successful!")
-
-# finally:
-#     driver.quit()
+finally:
+    driver.quit()
